@@ -1,6 +1,5 @@
 package temp.bpmn2svg.bpmn;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,12 +29,6 @@ public record Process(
                 .filter( link -> link.sourceRef().equals(startNodeId))
                 .map(SequenceFlow::targetRef)
                 .collect(Collectors.toSet());
-    }
-
-    public List<BpmnObject> getLinks() {
-        return bpmnObjects.values().stream()
-                .filter( bpmnObject -> BpmnObjectType.getLinkTypes().contains(bpmnObject.getType()))
-                .toList();
     }
 
 }

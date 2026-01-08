@@ -14,6 +14,8 @@ public class DistributeNodes {
 
     private final Map<String, Position> positions = new TreeMap<>();
 
+    private final Map<Integer, Integer> maxColByRow = new HashMap<>();
+
     public DistributeNodes(Definitions definitions) {
         this.definitions = definitions;
     }
@@ -37,20 +39,20 @@ public class DistributeNodes {
     }
 
     private void perform(Process process) {
-        visit(process, process.getStartEvent().id(), 0, 0);
+        visit(process, process.getStartEvent().id(), 0);
     }
 
-    private void visit(Process process, String id, int row, int col) {
+    private void visit(Process process, String id, int row) {
         if (isVisited(id)) {
             return;
         }
+        int col = maxColByRow.computeIfAbsent(row, k -> 0);
         positions.put(id, new Position(row, col));
+        maxColByRow.put(row, col + 1);
 
-        final List<String> linkedIds = new ArrayList<>(process.getLinkedNodeIds(id));
-        for( int i = 0; i<linkedIds.size(); i++ ) {
-            visit(process, linkedIds.get(i), row+1, i);
-        }
-
+        process.getLinkedNodeIds(id).forEach(
+                linkedId -> visit(process, linkedId, row + 1)
+        );
     }
 
     private boolean isVisited(String id) {
@@ -61,7 +63,7 @@ public class DistributeNodes {
         return positions.values().stream()
                 .map(getter)
                 .max(Integer::compareTo)
-                .orElse(-1) + 1;
+                .orElse(0);
     }
 
     public record Position(int row, int col) {

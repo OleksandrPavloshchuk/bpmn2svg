@@ -138,9 +138,11 @@ public record TranslateProcess2Svg(
 
     private SvgPoint getCenter(BpmnObject bpmnObject) {
         return switch (bpmnObject.getType()) {
-            case PROCESS, DEFINITIONS, SEQUENCE_FLOW -> null;
+            case PROCESS, DEFINITIONS, SEQUENCE_FLOW
+                    -> throw new IllegalArgumentException("Unexpected type: " + bpmnObject.getType());
             case END_EVENT, EXCLUSIVE_GATEWAY, PARALLEL_GATEWAY,
-                 SERVICE_TASK, USER_TASK, START_EVENT -> coordinates.get(bpmnObject.id());
+                 SERVICE_TASK, USER_TASK, START_EVENT
+                    -> coordinates.get(bpmnObject.id());
         };
     }
 
