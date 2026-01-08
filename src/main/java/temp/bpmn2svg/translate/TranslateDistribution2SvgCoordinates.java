@@ -12,22 +12,21 @@ public class TranslateDistribution2SvgCoordinates
 
     @Override
     public Map<String, SvgPoint> apply(Map<String, DistributeNodes.Position> src) {
-
         final Map<String, SvgPoint> result = new HashMap<>();
-        src.forEach((id, position) -> {
-            final int colsCount = getColsCount(position.row(), src);
-            final double offset = ((double) colsCount) / 2;
-            final double x = (position.col() + 2 - offset) * SvgElementsSizes.X_STEP;
-
-            final SvgPoint svgPoint = new SvgPoint(
-                    (int) x,
-                    (1 +position.row()) * SvgElementsSizes.Y_STEP);
-            result.put(id, svgPoint);
-        });
+        src.forEach((id, position) -> result.put(id, getSvgPoint(src, position)));
         return result;
     }
 
-    private int getColsCount(int row, Map<String, DistributeNodes.Position> src) {
+    private static SvgPoint getSvgPoint(Map<String, DistributeNodes.Position> src, DistributeNodes.Position position) {
+        final int colsCount = getColsCount(position.row(), src);
+        final double offset = ((double) colsCount) / 2;
+        final double x = (position.col() + 2 - offset) * SvgElementsSizes.X_STEP;
+        return new SvgPoint(
+                (int) x,
+                (1 + position.row()) * SvgElementsSizes.Y_STEP);
+    }
+
+    private static int getColsCount(int row, Map<String, DistributeNodes.Position> src) {
         return src.values().stream()
                 .filter(position -> position.row() == row)
                 .map(DistributeNodes.Position::col)
