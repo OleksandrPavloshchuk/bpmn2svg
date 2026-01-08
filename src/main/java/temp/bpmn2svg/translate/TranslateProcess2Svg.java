@@ -1,4 +1,4 @@
-package temp.bpmn2svg;
+package temp.bpmn2svg.translate;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -6,12 +6,11 @@ import temp.bpmn2svg.bpmn.*;
 import temp.bpmn2svg.bpmn.Process;
 import temp.bpmn2svg.svg.*;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 
-public record ConvertFromProcessToDom(
+public record TranslateProcess2Svg(
         Document doc,
         Map<String, SvgPoint> coordinates,
         Process process) {

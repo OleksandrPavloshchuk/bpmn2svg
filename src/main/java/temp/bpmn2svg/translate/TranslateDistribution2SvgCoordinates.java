@@ -1,4 +1,4 @@
-package temp.bpmn2svg;
+package temp.bpmn2svg.translate;
 
 import temp.bpmn2svg.svg.SvgElementsSizes;
 import temp.bpmn2svg.svg.SvgPoint;
@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class TranslatorToSvgCoordinates
-        implements Function<Map<String, NodesDistributor.Position>, Map<String, SvgPoint>> {
+public class TranslateDistribution2SvgCoordinates
+        implements Function<Map<String, DistributeNodes.Position>, Map<String, SvgPoint>> {
 
     @Override
-    public Map<String, SvgPoint> apply(Map<String, NodesDistributor.Position> src) {
+    public Map<String, SvgPoint> apply(Map<String, DistributeNodes.Position> src) {
 
         final Map<String, SvgPoint> result = new HashMap<>();
         src.forEach((id, position) -> {
@@ -27,10 +27,10 @@ public class TranslatorToSvgCoordinates
         return result;
     }
 
-    private int getColsCount(int row, Map<String, NodesDistributor.Position> src) {
+    private int getColsCount(int row, Map<String, DistributeNodes.Position> src) {
         return src.values().stream()
                 .filter(position -> position.row() == row)
-                .map(NodesDistributor.Position::col)
+                .map(DistributeNodes.Position::col)
                 .max(Integer::compare)
                 .orElse(-1) + 1;
     }

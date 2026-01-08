@@ -1,4 +1,4 @@
-package temp.bpmn2svg;
+package temp.bpmn2svg.translate;
 
 import temp.bpmn2svg.bpmn.Definitions;
 import temp.bpmn2svg.bpmn.Process;
@@ -9,12 +9,12 @@ import java.util.function.Function;
 /**
  * This class distributes ids by rows and columns for further calculation of SVG positions
  */
-public class NodesDistributor {
+public class DistributeNodes {
     private final Definitions definitions;
 
     private final Map<String, Position> positions = new TreeMap<>();
 
-    public NodesDistributor(Definitions definitions) {
+    public DistributeNodes(Definitions definitions) {
         this.definitions = definitions;
     }
 
@@ -22,9 +22,10 @@ public class NodesDistributor {
         return positions;
     }
 
-    public void distribute() {
+    public DistributeNodes perform() {
         // TODO Only one process
-        this.definitions.processes().forEach(this::distribute);
+        this.definitions.processes().forEach(this::perform);
+        return this;
     }
 
     public int getMaxRow() {
@@ -35,7 +36,7 @@ public class NodesDistributor {
         return getMax(Position::col);
     }
 
-    private void distribute(Process process) {
+    private void perform(Process process) {
         visit(process, process.getStartEvent().id(), 0, 0);
     }
 

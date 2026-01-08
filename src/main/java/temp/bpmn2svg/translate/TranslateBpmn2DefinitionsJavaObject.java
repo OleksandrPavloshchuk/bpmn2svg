@@ -1,4 +1,4 @@
-package temp.bpmn2svg;
+package temp.bpmn2svg.translate;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,7 +9,7 @@ import temp.bpmn2svg.bpmn.Process;
 import java.util.*;
 import java.util.function.Function;
 
-public class ConvertFromDomToDefinitions
+public class TranslateBpmn2DefinitionsJavaObject
         implements Function<Document, Definitions> {
 
     @Override

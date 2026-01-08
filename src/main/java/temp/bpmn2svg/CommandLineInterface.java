@@ -1,5 +1,7 @@
 package temp.bpmn2svg;
 
+import temp.bpmn2svg.translate.TranslateBpmn2Svg;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,7 +14,7 @@ public class CommandLineInterface {
 
     public static void main(String[] args) {
         try {
-            new Convertor(System.in,System.out).apply();
+            new TranslateBpmn2Svg(System.in,System.out).apply();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Conversion error", ex);
         }
