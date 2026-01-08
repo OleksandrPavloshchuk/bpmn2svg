@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bpmn:definitions
+        xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+        xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+        xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+        id="Definitions_ConsumerLoan"
+        targetNamespace="http://example.com/consumer-loan">
+
+    <bpmn:process
+            id="consumer-loan"
+            name="Consumer Loan Process"
+            isExecutable="true"
+            camunda:historyTimeToLive="120">
+
+        <!-- Start: consumer asked credit consultant to get loan -->
+        <bpmn:startEvent
+                id="startEvent"
+                name="Start"/>
+
+        <!-- Credit consultant enters application data -->
+        <bpmn:userTask
+                id="enterApplication"
+                name="Enter loan application"
+        />
+
+        <!-- Parallel checks of application -->
+        <bpmn:parallelGateway
+                id="parallelChecksStart"/>
+
+        <bpmn:serviceTask
+                id="personCheck"
+                name="Person check"
+                camunda:class="tutorial.camunda.consumer.loans.tasks.CheckPersonDelegate"/>
+
+        <bpmn:serviceTask
+                id="financeCheck"
+                name="Finance check"
+                camunda:class="tutorial.camunda.consumer.loans.tasks.CheckFinanceDelegate"/>
+
+        <bpmn:parallelGateway
+                id="parallelChecksEnd"/>
+
+        <!-- Scoring aggregation -->
+        <bpmn:serviceTask
+                id="scoring"
+                name="Aggregate scoring"
+                camunda:class="tutorial.camunda.consumer.loans.tasks.AggregateScoringDelegate"/>
+
+        <!-- Decision -->
+        <bpmn:exclusiveGateway
+                id="scoringDecision"
+                name="Scoring decision"
+        />
+
+        <!-- Manual review and final decision -->
+        <bpmn:userTask
+                id="manualReview"
+                name="Manual review and final decision"
+        />
+
+        <!-- Deliver decision to consumer -->
+        <bpmn:userTask
+                id="deliverDecision"
+                name="Deliver decision to the consumer"
+        />
+
+        <!-- End states -->
+        <bpmn:endEvent
+                id="endEvent"
+                name="End"/>
+
+        <!-- Sequence flows -->
+        <bpmn:sequenceFlow
+                id="startEvent-enterApplication"
+                sourceRef="startEvent"
+                targetRef="enterApplication"/>
+
+        <bpmn:sequenceFlow
+                id="enterApplication-parallelChecksStart"
+                sourceRef="enterApplication"
+                targetRef="parallelChecksStart"/>
+
+        <bpmn:sequenceFlow
+                id="parallelChecksStart-personCheck"
+                sourceRef="parallelChecksStart"
+                targetRef="personCheck"/>
+
+        <bpmn:sequenceFlow
+                id="parallelChecksStart-financeCheck"
+                sourceRef="parallelChecksStart"
+                targetRef="financeCheck"/>
+
+        <bpmn:sequenceFlow
+                id="personCheck-parallelChecksEnd"
+                sourceRef="personCheck"
+                targetRef="parallelChecksEnd"/>
+
+        <bpmn:sequenceFlow
+                id="financeCheck-parallelChecksEnd"
+                sourceRef="financeCheck"
+                targetRef="parallelChecksEnd"/>
+
+        <bpmn:sequenceFlow
+                id="parallelChecksEnd-scoring"
+                sourceRef="parallelChecksEnd"
+                targetRef="scoring"/>
+
+        <bpmn:sequenceFlow
+                id="scoring-scoringDecision"
+                sourceRef="scoring"
+                targetRef="scoringDecision"/>
+
+        <bpmn:sequenceFlow
+                id="scoringDecision-manualReview"
+                sourceRef="scoringDecision"
+                targetRef="manualReview">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+                ${scoringResult == 'MANUAL'}
+            </bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow
+                id="scoringDecision-deliverDecision"
+                sourceRef="scoringDecision"
+                targetRef="deliverDecision">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+                ${scoringResult != 'MANUAL'}
+            </bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow
+                id="manualReview-deliverDecision"
+                sourceRef="manualReview"
+                targetRef="deliverDecision" />
+
+        <bpmn:sequenceFlow
+                id="deliverDecision-endEvent"
+                sourceRef="deliverDecision"
+                targetRef="endEvent" />
+
+    </bpmn:process>
+
+</bpmn:definitions>

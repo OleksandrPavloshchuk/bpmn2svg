@@ -1,0 +1,25 @@
+plugins {
+	id "java"
+	id "application"
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+jar {
+	manifest {
+		attributes(
+				"Main-Class" : "temp.bpmn2svg.CommandLineInterface"
+		)
+	}
+	from {
+		configurations.runtimeClasspath.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+dependencies {
+}
