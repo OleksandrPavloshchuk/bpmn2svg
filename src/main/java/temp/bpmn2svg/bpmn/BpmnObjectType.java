@@ -24,10 +24,6 @@ public enum BpmnObjectType {
         this.category = category;
     }
 
-    public BpmnObjectCategory getCategory() {
-        return category;
-    }
-
     public void verify(String diagramName) {
         if (!this.diagramName.equals(diagramName)) {
             throw new IllegalArgumentException("Unexpected diagram name: " + diagramName);
@@ -41,17 +37,4 @@ public enum BpmnObjectType {
 
     }
 
-    public static Set<BpmnObjectType> getNodeTypes() {
-        return filterByCategory(BpmnObjectCategory.NODE);
-    }
-
-    public static Set<BpmnObjectType> getLinkTypes() {
-        return filterByCategory(BpmnObjectCategory.LINK);
-    }
-
-    private static Set<BpmnObjectType> filterByCategory(BpmnObjectCategory category) {
-        return Stream.of(values())
-                .filter(type -> type.category == category)
-                .collect(Collectors.toSet());
-    }
 }

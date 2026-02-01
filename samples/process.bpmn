@@ -25,6 +25,7 @@
         <bpmn:userTask
                 id="enterApplication"
                 name="Enter loan application"
+                camunda:candidateGroups="loanConsultants"
         />
 
         <!-- Parallel checks of application -->
@@ -60,12 +61,14 @@
         <bpmn:userTask
                 id="manualReview"
                 name="Manual review and final decision"
+                camunda:candidateGroups="backoffice"
         />
 
         <!-- Deliver decision to consumer -->
         <bpmn:userTask
                 id="deliverDecision"
                 name="Deliver decision to the consumer"
+                camunda:candidateGroups="loanConsultants"
         />
 
         <!-- End states -->

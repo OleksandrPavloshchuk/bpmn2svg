@@ -66,7 +66,8 @@ public class TranslateBpmn2DefinitionsJavaObject
     }
 
     private UserTask toUserTask(Element root) {
-        return new UserTask(getId(root), getName(root));
+        final String candidateGroups = root.getAttribute("camunda:candidateGroups");
+        return new UserTask(getId(root), getName(root), candidateGroups);
     }
 
     private ServiceTask toServiceTask(Element root) {

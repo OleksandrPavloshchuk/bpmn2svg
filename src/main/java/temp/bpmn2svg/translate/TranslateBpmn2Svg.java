@@ -15,11 +15,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 
 public record TranslateBpmn2Svg(
         InputStream input,
         OutputStream output) {
+
+    public static final String KEY_NO_GROUPS = "";
 
     public void apply() throws IOException, ParserConfigurationException, SAXException, TransformerException {
         XmlUtils.writeDocumentToOutput(
@@ -55,6 +58,6 @@ public record TranslateBpmn2Svg(
         new TranslateProcess2Svg(result, coordinates, process).convert();
         return result;
     }
-
+    
 }
 
