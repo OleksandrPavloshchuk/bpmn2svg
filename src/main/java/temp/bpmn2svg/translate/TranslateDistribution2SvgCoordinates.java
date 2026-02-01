@@ -17,7 +17,7 @@ public record TranslateDistribution2SvgCoordinates(Process process, DistributeNo
     }
 
     private SvgPoint getSvgPoint(String nodeId, DistributeNodes.Position position) {
-        final String laneId = Lanes.getLane(process.bpmnObjects().get(nodeId));
+        final String laneId = LanesSupport.getLane(process.bpmnObjects().get(nodeId));
         final int laneOffset = distributeNodes.getLaneOffset(process, laneId);
         final int offsetInLane = distributeNodes.getOffsetInLane(nodeId);
         final int x = (laneOffset + offsetInLane) * SvgElementsSizes.X_STEP;

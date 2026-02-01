@@ -18,12 +18,23 @@ public class DistributeNodes {
 
     private final Map<Integer, Map<String, Integer>> maxColByRowAndLine = new HashMap<>();
 
+    private final Map<String, Integer> laneOffsets = new HashMap<>();
+
+    private final Map<String, Integer> laneWidths = new HashMap<>();
+
     public DistributeNodes(Definitions definitions) {
         this.definitions = definitions;
     }
 
     public Map<String, Position> getPositions() {
         return positions;
+    }
+
+    public Map<String, Integer> getLaneOffsets() { return laneOffsets; }
+    public Map<String, Integer> getLaneWidths() {
+        // Calculate the width of all elements:
+        laneOffsets.keySet().forEach(this::getLaneWidth);
+        return laneWidths;
     }
 
     public DistributeNodes perform() {
@@ -40,27 +51,35 @@ public class DistributeNodes {
         return getMax(Position::col);
     }
 
-    public int getMaxCol(String laneId) {
+    public int getLaneWidth(String laneId) {
+        return laneWidths.computeIfAbsent(laneId, this::calculateLaneWidth);
+    }
+
+    public int getLaneOffset(Process process, String laneId) {
+        return laneOffsets.computeIfAbsent(laneId, (k) -> calculateLaneOffset(process, k));
+    }
+
+    public int getOffsetInLane(String nodeId) {
+        return positions.get(nodeId).col();
+    }
+
+    private int calculateLaneWidth(String laneId) {
         return maxColByRowAndLine.values().stream()
                 .map(maxColByLineInRow -> maxColByLineInRow.getOrDefault(laneId, 0))
                 .max(Integer::compareTo)
                 .orElse(0);
     }
 
-    public int getLaneOffset(Process process, String laneId) {
-        final Set<String> sortedLaneIds = new TreeSet<>(new Lanes(process.bpmnObjects()).getLaneIds());
+    private int calculateLaneOffset(Process process, String laneId) {
+        final Set<String> sortedLaneIds = new TreeSet<>(new LanesSupport(process.bpmnObjects()).getLaneIds());
         int result = 0;
         for (final String s : sortedLaneIds) {
             if (s.equals(laneId)) {
                 return result;
             }
-            result += getMaxCol(s);
+            result += getLaneWidth(s);
         }
         return result;
-    }
-
-    public int getOffsetInLane(String nodeId) {
-        return positions.get(nodeId).col();
     }
 
     private void perform(Process process) {
@@ -71,7 +90,7 @@ public class DistributeNodes {
         if (isVisited(id)) {
             return;
         }
-        final String laneId = Lanes.getLane(process.bpmnObjects().get(id));
+        final String laneId = LanesSupport.getLane(process.bpmnObjects().get(id));
         final Map<String, Integer> lineCols = maxColByRowAndLine.computeIfAbsent(row, k -> new HashMap<>());
         final int mapCol = lineCols.computeIfAbsent(laneId, k -> 0);
 

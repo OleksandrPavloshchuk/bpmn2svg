@@ -54,7 +54,14 @@ public record TranslateBpmn2Svg(
         final Document result = new SvgBaseDocumentBuilder(distributeNodes.getMaxCol(), distributeNodes.getMaxRow())
                 .build();
 
-        new TranslateProcess2Svg(result, coordinates, process).convert();
+        new TranslateProcess2Svg(
+                result,
+                coordinates,
+                distributeNodes.getLaneOffsets(),
+                distributeNodes.getLaneWidths(),
+                distributeNodes.getMaxRow(),
+                process
+        ).convert();
         return result;
     }
 

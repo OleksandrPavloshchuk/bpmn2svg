@@ -13,10 +13,30 @@ import java.util.function.Function;
 public record TranslateProcess2Svg(
         Document doc,
         Map<String, SvgPoint> coordinates,
+        Map<String, Integer> laneOffsets,
+        Map<String, Integer> laneWidths,
+        int height,
         Process process) {
 
     public void convert() {
         final Element root = doc.getDocumentElement();
+        renderLanes(root);
+        renderNodesAndEdges(root);
+    }
+
+    private void renderLanes(Element root) {
+        laneOffsets.forEach((laneId, laneOffset) -> {
+            final int laneWidth = laneWidths.get(laneId);
+            final SvgLane lane = new SvgLane(laneOffset, laneWidth, height);
+            root.appendChild(lane.createElement(doc));
+            final double cx = (laneOffset + ((double) laneWidth) / 2 - 0.5) * SvgElementsSizes.X_STEP;
+            final SvgPoint center = new SvgPoint((int) cx, 50);
+            final SvgText text = new SvgText(center, laneId);
+            root.appendChild(text.createElement(doc));
+        });
+    }
+
+    private void renderNodesAndEdges(Element root) {
         final Set<String> ids = process.bpmnObjects().keySet();
         ids.forEach(id -> {
             final List<Element> elements = convert(getBpmnObject(id));
@@ -138,11 +158,10 @@ public record TranslateProcess2Svg(
 
     private SvgPoint getCenter(BpmnObject bpmnObject) {
         return switch (bpmnObject.getType()) {
-            case PROCESS, DEFINITIONS, SEQUENCE_FLOW
-                    -> throw new IllegalArgumentException("Unexpected type: " + bpmnObject.getType());
+            case PROCESS, DEFINITIONS, SEQUENCE_FLOW ->
+                    throw new IllegalArgumentException("Unexpected type: " + bpmnObject.getType());
             case END_EVENT, EXCLUSIVE_GATEWAY, PARALLEL_GATEWAY,
-                 SERVICE_TASK, USER_TASK, START_EVENT
-                    -> coordinates.get(bpmnObject.id());
+                 SERVICE_TASK, USER_TASK, START_EVENT -> coordinates.get(bpmnObject.id());
         };
     }
 

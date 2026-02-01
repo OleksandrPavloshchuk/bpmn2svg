@@ -7,13 +7,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public record Lanes(Map<String, BpmnObject> bpmnObjects) {
+public record LanesSupport(Map<String, BpmnObject> bpmnObjects) {
     public static final String SYSTEM_LANE_ID = "0";    // should be the 1st
 
     public Collection<String> getLaneIds() {
         return bpmnObjects.values().stream()
                 .filter( bpmnObject -> bpmnObject.getType().isNode())
-                .map(Lanes::getLane)
+                .map(LanesSupport::getLane)
                 .collect(Collectors.toSet());
     }
 

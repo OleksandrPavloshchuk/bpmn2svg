@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1800">
     <style type="text/css">text {font-family: Arial, sans serif; font-size: 8pt; text-anchor:middle; dominant-baseline:
         middle;}
@@ -10,43 +9,49 @@
             <path d="M 0 0 L 20 10 L 0 20 Z" fill="gray"/>
         </marker>
     </defs>
-    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="270" y="1390"/>
-    <text fill="black" x="360" y="1440">Deliver decision to the consumer</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="360" x2="500" y1="1490" y2="1591"/>
-    <circle cx="540" cy="1620" fill="white" r="50" stroke="black" stroke-width="3"/>
-    <text fill="black" x="540" y="1620">End</text>
-    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="450" y="310"/>
-    <text fill="black" x="540" y="360">Enter loan application</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="540" x2="540" y1="410" y2="480"/>
-    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="630" y="670"/>
-    <text fill="black" x="720" y="720">Finance check</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="720" x2="600" y1="770" y2="900"/>
+    <rect fill="white" height="1890.0" stroke="lightgray" stroke-width="1" width="720" x="-180.0" y="-180"/>
+    <text fill="black" x="180" y="50">0</text>
+    <rect fill="white" height="1890.0" stroke="lightgray" stroke-width="1" width="360" x="540.0" y="-180"/>
+    <text fill="black" x="720" y="50">backoffice</text>
+    <rect fill="white" height="1890.0" stroke="lightgray" stroke-width="1" width="360" x="900.0" y="-180"/>
+    <text fill="black" x="1080" y="50">loanConsultants</text>
+    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="990" y="1390"/>
+    <text fill="black" x="1080" y="1440">Deliver decision to the consumer</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="1080" x2="50" y1="1490" y2="1614"/>
+    <circle cx="0" cy="1620" fill="white" r="50" stroke="black" stroke-width="3"/>
+    <text fill="black" x="0" y="1620">End</text>
+    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="990" y="310"/>
+    <text fill="black" x="1080" y="360">Enter loan application</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="1080" x2="60" y1="410" y2="540"/>
+    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="270" y="670"/>
+    <text fill="black" x="360" y="720">Finance check</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="360" x2="60" y1="770" y2="900"/>
     <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="630" y="1390"/>
     <text fill="black" x="720" y="1440">Manual review and final decision</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="630" x2="450" y1="1440" y2="1440"/>
-    <path d="M540 840 L600 900 L540 960 L480 900 L540 840 Z" fill="white" stroke="black"/>
-    <path d="M540 875 L540 925 M515 900 L565 900 Z" stroke="lightgray" stroke-width="10"/>
-    <text fill="black" x="540" y="900">parallelChecksEnd</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="540" x2="540" y1="960" y2="1030"/>
-    <path d="M540 480 L600 540 L540 600 L480 540 L540 480 Z" fill="white" stroke="black"/>
-    <path d="M540 515 L540 565 M515 540 L565 540 Z" stroke="lightgray" stroke-width="10"/>
-    <text fill="black" x="540" y="540">parallelChecksStart</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="600" x2="720" y1="540" y2="670"/>
-    <line marker-end="url(#arrow)" stroke="gray" x1="480" x2="360" y1="540" y2="670"/>
-    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="270" y="670"/>
-    <text fill="black" x="360" y="720">Person check</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="360" x2="480" y1="770" y2="900"/>
-    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="450" y="1030"/>
-    <text fill="black" x="540" y="1080">Aggregate scoring</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="540" x2="540" y1="1130" y2="1200"/>
-    <path d="M540 1200 L600 1260 L540 1320 L480 1260 L540 1200 Z" fill="white" stroke="black"/>
-    <path d="M560 1240 L520 1280 M520 1240 L560 1280 Z" stroke="lightgray" stroke-width="10"/>
-    <text fill="black" x="540" y="1260">Scoring decision</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="480" x2="360" y1="1260" y2="1390"/>
-    <text fill="black" x="420" y="1325">scoringResult != 'MANUAL'</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="600" x2="720" y1="1260" y2="1390"/>
-    <text fill="black" x="660" y="1325">scoringResult == 'MANUAL'</text>
-    <circle cx="540" cy="180" fill="white" r="50" stroke="black" stroke-width="1"/>
-    <text fill="black" x="540" y="180">Start</text>
-    <line marker-end="url(#arrow)" stroke="gray" x1="540" x2="540" y1="230" y2="310"/>
+    <line marker-end="url(#arrow)" stroke="gray" x1="810" x2="990" y1="1440" y2="1440"/>
+    <path d="M0 840 L60 900 L0 960 L-60 900 L0 840 Z" fill="white" stroke="black"/>
+    <path d="M0 875 L0 925 M-25 900 L25 900 Z" stroke="lightgray" stroke-width="10"/>
+    <text fill="black" x="0" y="900">parallelChecksEnd</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="0" x2="0" y1="960" y2="1030"/>
+    <path d="M0 480 L60 540 L0 600 L-60 540 L0 480 Z" fill="white" stroke="black"/>
+    <path d="M0 515 L0 565 M-25 540 L25 540 Z" stroke="lightgray" stroke-width="10"/>
+    <text fill="black" x="0" y="540">parallelChecksStart</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="60" x2="360" y1="540" y2="670"/>
+    <line marker-end="url(#arrow)" stroke="gray" x1="0" x2="0" y1="600" y2="670"/>
+    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="-90" y="670"/>
+    <text fill="black" x="0" y="720">Person check</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="0" x2="0" y1="770" y2="840"/>
+    <rect fill="white" height="100" stroke="black" stroke-width="1" width="180" x="-90" y="1030"/>
+    <text fill="black" x="0" y="1080">Aggregate scoring</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="0" x2="0" y1="1130" y2="1200"/>
+    <path d="M0 1200 L60 1260 L0 1320 L-60 1260 L0 1200 Z" fill="white" stroke="black"/>
+    <path d="M20 1240 L-20 1280 M-20 1240 L20 1280 Z" stroke="lightgray" stroke-width="10"/>
+    <text fill="black" x="0" y="1260">Scoring decision</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="60" x2="1080" y1="1260" y2="1390"/>
+    <text fill="black" x="570" y="1325">scoringResult != 'MANUAL'</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="60" x2="720" y1="1260" y2="1390"/>
+    <text fill="black" x="390" y="1325">scoringResult == 'MANUAL'</text>
+    <circle cx="0" cy="180" fill="white" r="50" stroke="black" stroke-width="1"/>
+    <text fill="black" x="0" y="180">Start</text>
+    <line marker-end="url(#arrow)" stroke="gray" x1="49" x2="1080" y1="188" y2="310"/>
 </svg>
