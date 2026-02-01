@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * This class distributes ids by rows and columns for further calculation of SVG positions
+ * This class distributes ids by rows, lanes and columns in lanes for further calculation of SVG positions
  */
 public class DistributeNodes {
     private final Definitions definitions;
@@ -15,6 +15,8 @@ public class DistributeNodes {
     private final Map<String, Position> positions = new TreeMap<>();
 
     private final Map<Integer, Integer> maxColByRow = new HashMap<>();
+
+    private final Map<Integer, Map<String, Integer>> maxColByRowAndLine = new HashMap<>();
 
     public DistributeNodes(Definitions definitions) {
         this.definitions = definitions;
@@ -38,6 +40,29 @@ public class DistributeNodes {
         return getMax(Position::col);
     }
 
+    public int getMaxCol(String laneId) {
+        return maxColByRowAndLine.values().stream()
+                .map(maxColByLineInRow -> maxColByLineInRow.getOrDefault(laneId, 0))
+                .max(Integer::compareTo)
+                .orElse(0);
+    }
+
+    public int getLaneOffset(Process process, String laneId) {
+        final Set<String> sortedLaneIds = new TreeSet<>(new Lanes(process.bpmnObjects()).getLaneIds());
+        int result = 0;
+        for (final String s : sortedLaneIds) {
+            if (s.equals(laneId)) {
+                return result;
+            }
+            result += getMaxCol(s);
+        }
+        return result;
+    }
+
+    public int getOffsetInLane(String nodeId) {
+        return positions.get(nodeId).col();
+    }
+
     private void perform(Process process) {
         visit(process, process.getStartEvent().id(), 0);
     }
@@ -46,9 +71,14 @@ public class DistributeNodes {
         if (isVisited(id)) {
             return;
         }
-        int col = maxColByRow.computeIfAbsent(row, k -> 0);
-        positions.put(id, new Position(row, col));
-        maxColByRow.put(row, col + 1);
+        final String laneId = Lanes.getLane(process.bpmnObjects().get(id));
+        final Map<String, Integer> lineCols = maxColByRowAndLine.computeIfAbsent(row, k -> new HashMap<>());
+        final int mapCol = lineCols.computeIfAbsent(laneId, k -> 0);
+
+        positions.put(id, new Position(row, mapCol, laneId));
+        final int globalCol = maxColByRow.computeIfAbsent(row, k -> 0);
+        maxColByRow.put(row, globalCol + 1);
+        lineCols.put(laneId, mapCol + 1);
 
         process.getLinkedNodeIds(id).forEach(
                 linkedId -> visit(process, linkedId, row + 1)
@@ -66,7 +96,7 @@ public class DistributeNodes {
                 .orElse(0);
     }
 
-    public record Position(int row, int col) {
+    public record Position(int row, int col, String laneId) {
     }
 
 }

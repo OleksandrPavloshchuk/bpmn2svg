@@ -22,8 +22,6 @@ public record TranslateBpmn2Svg(
         InputStream input,
         OutputStream output) {
 
-    public static final String KEY_NO_GROUPS = "";
-
     public void apply() throws IOException, ParserConfigurationException, SAXException, TransformerException {
         XmlUtils.writeDocumentToOutput(
                 translateBpmn2Svg(
@@ -47,17 +45,18 @@ public record TranslateBpmn2Svg(
     private Document translateBpmn2Svg(Document src) throws ParserConfigurationException {
         final Definitions definitions = new TranslateBpmn2DefinitionsJavaObject().apply(src);
         final DistributeNodes distributeNodes = new DistributeNodes(definitions).perform();
-        final Map<String, SvgPoint> coordinates = new TranslateDistribution2SvgCoordinates()
-                .apply(distributeNodes.getPositions());
+        // TODO we use only the 1st process
+        final Process process = definitions.processes().getFirst();
+        final Map<String, SvgPoint> coordinates = new TranslateDistribution2SvgCoordinates(
+                process, distributeNodes
+        ).apply();
 
         final Document result = new SvgBaseDocumentBuilder(distributeNodes.getMaxCol(), distributeNodes.getMaxRow())
                 .build();
 
-        // TODO we use only the 1st process
-        final Process process = definitions.processes().getFirst();
         new TranslateProcess2Svg(result, coordinates, process).convert();
         return result;
     }
-    
+
 }
 

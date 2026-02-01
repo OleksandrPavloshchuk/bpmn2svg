@@ -37,4 +37,8 @@ public enum BpmnObjectType {
 
     }
 
+    public boolean isNode() {
+        return category==BpmnObjectCategory.NODE;
+    }
+
 }
